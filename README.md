@@ -3,11 +3,11 @@ Kulta-Mega-Stores-Inventory is a SQL project carried out in my journey as a data
 Here's the GitHub documentation (README.md) prepared with a focus on SQL, detailing the step-by-step process for analysis:
 
 ````markdown
-# Kultra Mega Stores (KMS) Inventory Analysis - Abuja Division (SQL-Focused)
+# Kultra Mega Stores (KMS) Inventory Analysis (SQL-Focused)
 
 ## Project Overview
 
-This project provides a business intelligence analysis of order and sales data for Kultra Mega Stores (KMS), a company specializing in office supplies and furniture. The analysis covers the Abuja division's operations from 2009 to 2012, aiming to deliver data-driven insights to support management decisions and address specific business challenges using SQL.
+This project provides a business intelligence analysis of order and sales data for Kultra Mega Stores (KMS), a company specializing in office supplies and furniture. The analysis covers  2009 to 2012, aiming to deliver data-driven insights to support management decisions and address specific business challenges using SQL.
 
 ## Objectives
 
@@ -23,8 +23,8 @@ The analysis is based on two primary datasets, assumed to be loaded into a relat
 ## Tools Used
 
 * **SQL (Structured Query Language)**: For querying and manipulating data within a relational database.
-* **Relational Database System (e.g., PostgreSQL, MySQL, SQL Server, SQLite)**: The environment where the data would be loaded and SQL queries executed.
-* **Database Client Tool**: Any tool capable of connecting to and executing SQL queries against the chosen database (e.g., DBeaver, SQL Workbench, pgAdmin, MySQL Workbench).
+* **Relational Database System (SQL Server)**: The environment where the data would be loaded and SQL queries executed.
+* **Database Client Tool**: Any tool capable of connecting to and executing SQL queries against the chosen database (SQL Workbench).
 
 ## Step-by-Step Analysis Process (using SQL)
 
@@ -36,46 +36,42 @@ This section details the SQL queries and the thought process behind answering ea
 
 #### 1. Which product category had the highest sales?
 
-* **Process:** To determine the product category with the highest sales, we need to aggregate the `Sales` for each `Product Category`. We will then order these aggregated sales in descending order and limit the result to the top entry.
+* **Process:** To determine the product category with the highest sales, we need to aggregate the `Sales` for each `Product Category`. I will then order these aggregated sales in descending order and limit the result to the top entry.
 * **SQL Query:**
     ```sql
-    SELECT "Product Category", SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
-    GROUP BY "Product Category"
-    ORDER BY TotalSales DESC
-    LIMIT 1;
+    Select top 1 Product_Category,
+    Sum ([Sales]) AS [Total_Sales]
+    FROM "KMS Sql Case Study"
+    Group By Product_Category
+    Order By [Total_Sales] Desc
     ```
 
 #### 2. What are the Top 3 and Bottom 3 regions in terms of sales?
 
-* **Process:** To find the top and bottom regions by sales, we group the sales data by `Region`, sum the `Sales` for each region, and then order the results. For the top 3, we order in descending sales and take the top 3. For the bottom 3, we order in ascending sales and take the top 3.
+* **Process:** To find the top and bottom regions by sales, we group the sales data by `Region`, sum the `Sales` for each region, and then order the results. For the top 3, we order in descending sales and take the top 3. For the bottom 3, I order in ascending sales and take the top 3.
 * **SQL Queries:**
     ```sql
     -- Top 3 Regions
-    SELECT Region, SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
-    GROUP BY Region
-    ORDER BY TotalSales DESC
-    LIMIT 3;
+    SELECT TOP 3 Region, SUM(Sales) AS Total_Sales
+    FROM "KMS Sql Case Study"
+    Group BY Region
+    ORDER BY Total_Sales DESC
 
     -- Bottom 3 Regions
-    SELECT Region, SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
+    SELECT TOP 3  Region, SUM(Sales) AS Total_Sales
+    FROM "KMS Sql Case Study"
     GROUP BY Region
-    ORDER BY TotalSales ASC
-    LIMIT 3;
+    ORDER BY Total_Sales ASC
     ```
 
 #### 3. What were the total sales of appliances in Ontario?
 
-* **Process:** This requires filtering the data. We select rows where `Product Category` is 'Office Supplies' (as 'Appliances' is a sub-category here), `Product Sub-Category` is 'Appliances', and the `Province` is 'Ontario'. Then, we sum the `Sales` for these filtered rows.
+* **Process:** This requires filtering the data. We select rows where `Product Category` is 'Office Supplies' (as 'Appliances' is a sub-category here), `Product Sub-Category` is 'Appliances', and the `Province` is 'Ontario'. Then, I sum the `Sales` for these filtered rows.
 * **SQL Query:**
     ```sql
-    SELECT SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
-    WHERE "Product Category" = 'Office Supplies'
-    AND "Product Sub-Category" = 'Appliances'
-    AND Province = 'Ontario';
+    SELECT SUM(SALES) AS TOTAL_APPLIANCE_SALES_IN_ONTARIO
+    FROM "KMS Sql Case Study"
+    WHERE Product_Sub_Category = 'Appliances' AND Province = 'Ontario'
     ```
 
 #### 4. Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers.
@@ -83,11 +79,10 @@ This section details the SQL queries and the thought process behind answering ea
 * **Process (SQL part):** First, identify the bottom 10 customers by summing their total `Sales`, ordering in ascending order, and taking the top 10.
 * **SQL Query (to identify customers):**
     ```sql
-    SELECT "Customer Name", SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
-    GROUP BY "Customer Name"
-    ORDER BY TotalSales ASC
-    LIMIT 10;
+    SELECT TOP 10 "CUSTOMER_NAME", SUM(SALES) AS TOTAL_SALES
+    FROM "KMS Sql Case Study"
+    GROUP BY CUSTOMER_NAME
+    ORDER BY TOTAL_SALES ASC
     ```
 * **Business Advice (derived from analysis):** Based on the identified customers, management could:
     * Offer personalized promotions or discounts tailored to their past purchases or expressed interests.
@@ -101,11 +96,10 @@ This section details the SQL queries and the thought process behind answering ea
 * **Process:** We group the data by `Ship Mode` and sum the `Shipping Cost` for each mode. Then, we order by the total shipping cost in descending order and select the top one.
 * **SQL Query:**
     ```sql
-    SELECT "Ship Mode", SUM("Shipping Cost") AS TotalShippingCost
-    FROM KMS_Sales_Data
-    GROUP BY "Ship Mode"
-    ORDER BY TotalShippingCost DESC
-    LIMIT 1;
+    SELECT "Ship_Mode", SUM("Shipping_Cost") AS TOTAL_SHIPPING_COST
+    FROM "KMS Sql Case Study"
+    GROUP BY "Ship_Mode"
+    ORDER BY TOTAL_SHIPPING_COST DESC
     ```
 
 ---
@@ -114,76 +108,64 @@ This section details the SQL queries and the thought process behind answering ea
 
 #### 6. Who are the most valuable customers, and what products or services do they typically purchase?
 
-* **Process:** To find the most valuable customers, we group by `Customer Name` and sum their `Profit`. We order this in descending order to find the top performers. To identify typical purchases, for each top customer, we count the frequency of `Product Category` and `Product Sub-Category` and find the most common ones.
+* **Process:** To find the most valuable customers, we group by `Customer Name`,'Customer_segment','Product_sub_Category' and sum their `Profit`. We order this in descending order to find the top performers. To identify typical purchases, for each top customer, we count the frequency of `Product Category` and `Product Sub-Category` and find the most common ones.
 * **SQL Queries:**
     ```sql
     -- To identify Most Valuable Customers by Profit
-    SELECT "Customer Name", SUM(Profit) AS TotalProfit
-    FROM KMS_Sales_Data
-    GROUP BY "Customer Name"
-    ORDER BY TotalProfit DESC
-    LIMIT 5;
+    SELECT TOP 5 Customer_Segment,Product_Sub_Category,Customer_Name, SUM(SALES) AS TOTAL_SALES
+    FROM "KMS Sql Case Study"
+    GROUP BY Customer_Segment,Product_Sub_Category,Customer_Name
+    ORDER BY TOTAL_SALES DESC
 
-    -- To find typical products for a specific valuable customer (e.g., 'Emily Phan'):
-    SELECT "Product Category", "Product Sub-Category", COUNT(*) AS PurchaseCount
-    FROM KMS_Sales_Data
-    WHERE "Customer Name" = 'Emily Phan' -- Replace with each valuable customer's name
-    GROUP BY "Product Category", "Product Sub-Category"
-    ORDER BY PurchaseCount DESC
-    LIMIT 1;
+ 
     ```
 
 #### 7. Which small business customer had the highest sales?
 
-* **Process:** We first filter the data for `Customer Segment` equal to 'Small Business'. Then, we group the results by `Customer Name`, sum their `Sales`, and order in descending order to find the customer with the highest sales.
+* **Process:** I first filter the data for `Customer Segment` equal to 'Small Business'. Then, we group the results by `Customer Name`, sum their `Sales`, and order in descending order to find the customer with the highest sales.
 * **SQL Query:**
     ```sql
-    SELECT "Customer Name", SUM(Sales) AS TotalSales
-    FROM KMS_Sales_Data
-    WHERE "Customer Segment" = 'Small Business'
-    GROUP BY "Customer Name"
-    ORDER BY TotalSales DESC
-    LIMIT 1;
+    SELECT TOP 1 Customer_Name, sum(sales) AS TOTAL_SALES
+    FROM "KMS Sql Case Study"
+    WHERE "Customer_Segment"='SMALL BUSINESS'
+    GROUP BY "Customer_Name"
+    ORDER BY TOTAL_SALES DESC
     ```
 
 #### 8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
 
-* **Process:** We filter the data for `Customer Segment` as 'Corporate' and `Order Date` within the years 2009 to 2012. We then group by `Customer Name` and count the distinct `Order ID`s to find the number of unique orders placed by each corporate customer. Finally, we order by the count of orders in descending order and select the top customer.
+* **Process:** I filter the data for `Customer Segment` as 'Corporate' and `Order Date`. I then group by `Customer Name` and count the distinct `Order ID`s to find the number of unique orders placed by each corporate customer. 
 * **SQL Query:**
     ```sql
-    SELECT "Customer Name", COUNT(DISTINCT "Order ID") AS NumberOfOrders
-    FROM KMS_Sales_Data
-    WHERE "Customer Segment" = 'Corporate'
-    AND STRFTIME('%Y', "Order Date") BETWEEN '2009' AND '2012' -- Example for SQLite, adjust date function for other SQL dialects (e.g., YEAR("Order Date") for MySQL/SQL Server)
-    GROUP BY "Customer Name"
-    ORDER BY NumberOfOrders DESC
-    LIMIT 1;
+    SELECT Customer_Name, count(distinct "Order_ID") AS NUMBER_OF_ORDERS
+    FROM "KMS Sql Case Study"
+    WHERE "Customer_Segment"='Corporate'
+    GROUP BY "Customer_Name"
+    ORDER BY  NUMBER_OF_ORDERS DESC
     ```
 
 #### 9. Which consumer customer was the most profitable one?
 
-* **Process:** We filter the data for `Customer Segment` as 'Consumer'. Then, we group by `Customer Name`, sum their `Profit`, and order in descending order to find the most profitable consumer customer.
+* **Process:** I filter the data for `Customer Segment` as 'Consumer'. Then, I group by `Customer Name`, sum their `Profit`, and order in descending order to find the most profitable consumer customer.
 * **SQL Query:**
     ```sql
-    SELECT "Customer Name", SUM(Profit) AS TotalProfit
-    FROM KMS_Sales_Data
-    WHERE "Customer Segment" = 'Consumer'
-    GROUP BY "Customer Name"
-    ORDER BY TotalProfit DESC
-    LIMIT 1;
+    SELECT TOP 1 "Customer_Name",SUM(Profit) AS TOTAL_PROFIT
+    FROM "KMS Sql Case Study"
+    WHERE "Customer_Segment"='Consumer'
+    GROUP BY "Customer_Name"
+    ORDER BY "TOTAL_PROFIT" DESC
     ```
 
 #### 10. Which customer returned items, and what segment do they belong to?
 
-* **Process:** To identify customers who returned items, we need to join `KMS_Sales_Data` with the `Order_Status` table on `Order ID`. We then filter the joined result where `Status` is 'Returned' and select distinct `Customer Name` and `Customer Segment`.
+* **Process:** To identify customers who returned items, I need to join `KMS_Sales_Data` with the `Order_Status` table on `Order ID`. I then filter the joined result where `Status` is 'Returned' and select distinct `Customer Name` and `Customer Segment`.
 * **SQL Query:**
     ```sql
-    SELECT DISTINCT
-        k."Customer Name",
-        k."Customer Segment"
-    FROM KMS_Sales_Data k
-    INNER JOIN Order_Status o ON k."Order ID" = o."Order ID"
-    WHERE o.Status = 'Returned';
+    SELECT DISTINCT KMS."Customer_Name",
+				KMS."Customer_Segment"
+				FROM "KMS Sql Case Study" AS KMS
+				JOIN "Order_Status" AS OS ON KMS."Order_ID"=OS."Order_ID"
+				WHERE OS.Status='RETURNED'
     ```
 
 #### 11. If the delivery truck is the most economical but the slowest shipping method and Express Air is the fastest but the most expensive one, do you think the company appropriately spent shipping costs based on the Order Priority? Explain your answer.
@@ -191,13 +173,22 @@ This section details the SQL queries and the thought process behind answering ea
 * **Process (SQL part):** We calculate the average `Shipping Cost` for each combination of `Ship Mode` and `Order Priority`. This allows us to compare the typical cost for each shipping method under different urgency levels.
 * **SQL Query (to analyze average shipping cost by mode and priority):**
     ```sql
-    SELECT
-        "Ship Mode",
-        "Order Priority",
-        AVG("Shipping Cost") AS AverageShippingCost
-    FROM KMS_Sales_Data
-    GROUP BY "Ship Mode", "Order Priority"
-    ORDER BY "Ship Mode", "Order Priority";
+    SELECT "Order_Priority","Ship_Mode",
+    SUM ("Shipping_Cost") AS Total_Shipping_Cost,
+    COUNT("Order_Id") AS Number_Of_Orders,
+    AVG("Shipping_Cost") AS Average_Shipping_Cost_Per_Order
+    FROM "KMS Sql Case Study"
+	GROUP BY "Order_Priority","Ship_Mode"
+	ORDER BY 
+		CASE "Order_Priority"
+			when 'critical' then 1
+			when 'high' then 2
+			when 'medium' then 3
+			when 'low' then 4
+			when 'not specified' then 5
+			else 6
+			end,
+		Average_Shipping_Cost_Per_Order desc
     ```
 * **Analysis and Explanation:**
     * **Observation:** By examining the results of the above query, we can observe the average shipping costs for 'Delivery Truck' (generally higher, slower) and 'Express Air' (generally lower, faster) across different `Order Priority` levels (Critical, High, Medium, Low, Not Specified).
