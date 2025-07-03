@@ -15,7 +15,7 @@ The primary objective of this analysis is to answer key business questions relat
 
 ## Data Sources
 
-The analysis is based on two primary datasets, assumed to be loaded into a relational database for SQL querying:
+The analysis is based on two primary datasets, which was  loaded into a relational database for SQL querying:
 
 1.  `KMS_Sales_Data`: Corresponds to the `KMS Sql Case Study.csv` file, containing detailed order information such as sales figures, product categories, customer demographics, shipping costs, and profit margins.
 2.  `Order_Status`: Corresponds to the `Order_Status.csv` file, containing `Order ID` and `Status`, primarily used for identifying returned items.
@@ -29,6 +29,23 @@ The analysis is based on two primary datasets, assumed to be loaded into a relat
 ## Step-by-Step Analysis Process (using SQL)
 
 This section details the SQL queries and the thought process behind answering each business question.
+### CREATE DATABASE
+create database KMS
+## IMPORT TABLE
+"KMS Sql Case Study"
+"Order_Status"
+
+## Alter table KMS Sql Case Study
+ALTER TABLE "KMS Sql Case Study"
+ALTER COLUMN Sales Decimal(18,4)
+
+##Alter table KMS Sql Case Study
+ALTER TABLE "KMS Sql Case Study"
+ALTER COLUMN Shipping_Cost Decimal(18,4)
+
+#Alter table kms sql case study
+ALTER TABLE "KMS Sql Case Study"
+ALTER COLUMN Profit Decimal(18,4)
 
 ---
 
