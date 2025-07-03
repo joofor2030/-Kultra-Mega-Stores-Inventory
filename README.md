@@ -29,11 +29,9 @@ The analysis is based on two primary datasets, which was  loaded into a relation
 ## Step-by-Step Analysis Process (using SQL)
 
 This section details the SQL queries and the thought process behind answering each business question.
-### CREATE DATABASE
-create database KMS
-## IMPORT TABLE
-"KMS Sql Case Study"
-"Order_Status"
+
+
+
 
 ## Alter table KMS Sql Case Study
 ALTER TABLE "KMS Sql Case Study"
@@ -53,7 +51,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 1. Which product category had the highest sales?
 
-* **Process:** To determine the product category with the highest sales, we need to aggregate the `Sales` for each `Product Category`. I will then order these aggregated sales in descending order and limit the result to the top entry.
+* **Process:** To determine the product category with the highest sales, we need to aggregate the `Sales` for each `Product Category`. I then order these aggregated sales in descending order and limit the result to the top entry.
 * **SQL Query:**
     ```sql
     Select top 1 Product_Category,
@@ -65,7 +63,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 2. What are the Top 3 and Bottom 3 regions in terms of sales?
 
-* **Process:** To find the top and bottom regions by sales, we group the sales data by `Region`, sum the `Sales` for each region, and then order the results. For the top 3, we order in descending sales and take the top 3. For the bottom 3, I order in ascending sales and take the top 3.
+* **Process:** To find the top and bottom regions by sales, I group the sales data by `Region`, sum the `Sales` for each region, and then order the results. For the top 3, I order in descending sales and take the top 3. For the bottom 3, I order in ascending sales and take the top 3.
 * **SQL Queries:**
     ```sql
     -- Top 3 Regions
@@ -83,7 +81,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 3. What were the total sales of appliances in Ontario?
 
-* **Process:** This requires filtering the data. We select rows where `Product Category` is 'Office Supplies' (as 'Appliances' is a sub-category here), `Product Sub-Category` is 'Appliances', and the `Province` is 'Ontario'. Then, I sum the `Sales` for these filtered rows.
+* **Process:** This requires filtering the data. I select rows where `Product Category` is 'Office Supplies' (as 'Appliances' is a sub-category here), `Product Sub-Category` is 'Appliances', and the `Province` is 'Ontario'. Then, I sum the `Sales` for these filtered rows.
 * **SQL Query:**
     ```sql
     SELECT SUM(SALES) AS TOTAL_APPLIANCE_SALES_IN_ONTARIO
@@ -93,7 +91,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 4. Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers.
 
-* **Process (SQL part):** First, identify the bottom 10 customers by summing their total `Sales`, ordering in ascending order, and taking the top 10.
+* **Process (SQL part):** Firstly, identify the bottom 10 customers by summing their total `Sales`, ordering in ascending order, and taking the top 10.
 * **SQL Query (to identify customers):**
     ```sql
     SELECT TOP 10 "CUSTOMER_NAME", SUM(SALES) AS TOTAL_SALES
@@ -110,7 +108,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 5. KMS incurred the most shipping cost using which shipping method?
 
-* **Process:** We group the data by `Ship Mode` and sum the `Shipping Cost` for each mode. Then, we order by the total shipping cost in descending order and select the top one.
+* **Process:** I group the data by `Ship Mode` and sum the `Shipping Cost` for each mode. Then, I order by the total shipping cost in descending order and select the top one.
 * **SQL Query:**
     ```sql
     SELECT "Ship_Mode", SUM("Shipping_Cost") AS TOTAL_SHIPPING_COST
@@ -125,7 +123,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 6. Who are the most valuable customers, and what products or services do they typically purchase?
 
-* **Process:** To find the most valuable customers, we group by `Customer Name`,'Customer_segment','Product_sub_Category' and sum their `Profit`. We order this in descending order to find the top performers. To identify typical purchases, for each top customer, we count the frequency of `Product Category` and `Product Sub-Category` and find the most common ones.
+* **Process:** To find the most valuable customers, I group by `Customer Name`,'Customer_segment','Product_sub_Category' and sum their `Profit`. I order this in descending order to find the top performers. To identify typical purchases, for each top customer, I count the frequency of `Product Category` and `Product Sub-Category` and find the most common ones.
 * **SQL Queries:**
     ```sql
     -- To identify Most Valuable Customers by Profit
@@ -175,7 +173,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 10. Which customer returned items, and what segment do they belong to?
 
-* **Process:** To identify customers who returned items, I need to join `KMS_Sales_Data` with the `Order_Status` table on `Order ID`. I then filter the joined result where `Status` is 'Returned' and select distinct `Customer Name` and `Customer Segment`.
+* **Process:** To identify customers who returned items, I join `KMS_Sales_Data` with the `Order_Status` table on `Order ID`. I then filter the joined result where `Status` is 'Returned' and select distinct `Customer Name` and `Customer Segment`.
 * **SQL Query:**
     ```sql
     SELECT DISTINCT KMS."Customer_Name",
@@ -187,7 +185,7 @@ ALTER COLUMN Profit Decimal(18,4)
 
 #### 11. If the delivery truck is the most economical but the slowest shipping method and Express Air is the fastest but the most expensive one, do you think the company appropriately spent shipping costs based on the Order Priority? Explain your answer.
 
-* **Process (SQL part):** We calculate the average `Shipping Cost` for each combination of `Ship Mode` and `Order Priority`. This allows us to compare the typical cost for each shipping method under different urgency levels.
+* **Process (SQL part):** I calculate the average `Shipping Cost` for each combination of `Ship Mode` and `Order Priority`. This allows me to compare the typical cost for each shipping method under different urgency levels.
 * **SQL Query (to analyze average shipping cost by mode and priority):**
     ```sql
     SELECT "Order_Priority","Ship_Mode",
@@ -208,7 +206,7 @@ ALTER COLUMN Profit Decimal(18,4)
 		Average_Shipping_Cost_Per_Order desc
     ```
 * **Analysis and Explanation:**
-    * **Observation:** By examining the results of the above query, we can observe the average shipping costs for 'Delivery Truck' (generally higher, slower) and 'Express Air' (generally lower, faster) across different `Order Priority` levels (Critical, High, Medium, Low, Not Specified).
+    * **Observation:** By examining the results of the above query, I can observe the average shipping costs for 'Delivery Truck' (generally higher, slower) and 'Express Air' (generally lower, faster) across different `Order Priority` levels (Critical, High, Medium, Low, Not Specified).
     * **Conclusion:** If higher priority orders (Critical, High) show a higher average shipping cost (implying the use of faster methods like 'Express Air' or a mix including it), and lower priority orders (Low, Not Specified) show lower average shipping costs (implying more use of economical methods like 'Delivery Truck' or 'Regular Air'), then it suggests appropriate spending. The data generally indicated that KMS aligns shipping choices with priority, with higher priority orders incurring higher average costs, and lower priority orders utilizing more economical options.
 
 ---
@@ -226,12 +224,12 @@ This SQL-driven analysis provides valuable insights into KMS's sales, customer b
 ## How to Set Up and Run
 
 1.  **Database Setup:**
-    * Choose a relational database system (e.g., PostgreSQL, SQLite, MySQL).
-    * Create a database (e.g., `kms_inventory_db`).
-    * Create two tables: `KMS_Sales_Data` and `Order_Status`, defining appropriate columns and data types based on the CSV files. Ensure `Order ID` is consistent for joining.
+    * Choose a relational database system (SQL).
+    * Create a database KMS
+    * Create two tables:"KMS Sql Case Study" and "Order_Status", defining appropriate columns and data types based on the CSV files.         Ensure `Order ID` is consistent for joining.
 
 2.  **Data Loading:**
-    * Import the `KMS Sql Case Study.csv` data into the `KMS_Sales_Data` table.
+    * Import the `KMS Sql Case Study.csv` data into the `KMS Sql Case Study` table.
     * Import the `Order_Status.csv` data into the `Order_Status` table.
     * Ensure date columns (e.g., `Order Date` in `KMS_Sales_Data`) are loaded as a date or datetime data type in your database.
 
