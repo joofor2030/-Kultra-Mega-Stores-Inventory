@@ -32,19 +32,6 @@ This section details the SQL queries and the thought process behind answering ea
 
 
 
-
-## Alter table KMS Sql Case Study
-ALTER TABLE "KMS Sql Case Study"
-ALTER COLUMN Sales Decimal(18,4)
-
-##Alter table KMS Sql Case Study
-ALTER TABLE "KMS Sql Case Study"
-ALTER COLUMN Shipping_Cost Decimal(18,4)
-
-#Alter table kms sql case study
-ALTER TABLE "KMS Sql Case Study"
-ALTER COLUMN Profit Decimal(18,4)
-
 ---
 
 ### Case Scenario I: Sales and Operational Efficiency
